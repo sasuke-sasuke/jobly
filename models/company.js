@@ -49,16 +49,51 @@ class Company {
    * Returns [{ handle, name, description, numEmployees, logoUrl }, ...]
    * */
 
-  static async findAll() {
-    const companiesRes = await db.query(
-          `SELECT handle,
-                  name,
-                  description,
-                  num_employees AS "numEmployees",
-                  logo_url AS "logoUrl"
-           FROM companies
-           ORDER BY name`);
+  static async findAll(minEmployees, maxEmployees, nameLike) {
+
+    let baseQuery = 
+    `SELECT handle, 
+            name, 
+            description, 
+            num_employees, 
+            logo_url 
+    FROM companies`;
+
+    let queryArr = [];
+    let queryBuilder = [];
+
+    console.log(minEmployees, maxEmployees, nameLike);
+
+    if (minEmployees !== undefined) {
+      queryArr.push(minEmployees)
+      queryBuilder.push(` WHERE num_employees >= ${minEmployees}`);
+    }
+
+    if (maxEmployees !== undefined) {
+      queryArr.push(maxEmployees)
+      if (queryArr.length > 1) {
+        queryBuilder.push(` AND`);
+      } else {
+        queryBuilder.push(` WHERE`);
+      }
+      queryBuilder.push(` num_employees <= ${maxEmployees}`);
+    }
+    if (nameLike) {
+      if (queryArr.length > 0) {
+        queryBuilder.push(` AND`);
+      } else {
+        queryBuilder.push(` WHERE`);
+      }
+      queryBuilder.push(` name ILIKE '%${nameLike}%'`);
+    }
+    
+    queryBuilder.push(` ORDER BY name`);
+    baseQuery += queryBuilder.join("");
+    console.log(baseQuery);
+
+    const companiesRes = await db.query(baseQuery);
     return companiesRes.rows;
+
   }
 
   /** Given a company handle, return data about company.
