@@ -51,10 +51,11 @@ class Company {
 
   static async findAll(minEmployees, maxEmployees, nameLike) {
 
+    // throws error if minEmployees > maxEmployees
     if (minEmployees > maxEmployees) {
       throw new BadRequestError(`minEmployees must be less than maxEmployees`);
     }
-
+    // base query before checking for params
     let baseQuery = 
     `SELECT handle, 
             name, 
@@ -63,6 +64,7 @@ class Company {
             logo_url 
     FROM companies`;
 
+    // arr to hold query builder and for checking values
     let queryArr = [];
     let queryBuilder = [];
 
