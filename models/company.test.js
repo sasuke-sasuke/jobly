@@ -66,25 +66,48 @@ describe("findAll", function () {
         handle: "c1",
         name: "C1",
         description: "Desc1",
-        numEmployees: 1,
-        logoUrl: "http://c1.img",
+        num_employees: 1,
+        logo_url: "http://c1.img",
       },
       {
         handle: "c2",
         name: "C2",
         description: "Desc2",
-        numEmployees: 2,
-        logoUrl: "http://c2.img",
+        num_employees: 2,
+        logo_url: "http://c2.img",
       },
       {
         handle: "c3",
         name: "C3",
         description: "Desc3",
-        numEmployees: 3,
-        logoUrl: "http://c3.img",
+        num_employees: 3,
+        logo_url: "http://c3.img",
       },
     ]);
   });
+  test("works: filter by handle", async function () {
+    let min = 1
+    let max = 1
+    let name = 'c'
+    let companies = await Company.findAll(min, max, name)
+    expect(companies).toEqual([{
+      handle: "c1",
+      name: "C1",
+      description: "Desc1",
+      num_employees: 1,
+      logo_url: "http://c1.img"
+    }])
+  })
+
+  test("error if min > max", async function () {
+    let min = 2;
+    let max = 1;
+    try {
+      let companies = await Company.findAll(min, max);
+    } catch (e) {
+      expect(e instanceof BadRequestError).toBeTruthy();
+    }
+  })
 });
 
 /************************************** get */

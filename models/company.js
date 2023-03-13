@@ -51,6 +51,10 @@ class Company {
 
   static async findAll(minEmployees, maxEmployees, nameLike) {
 
+    if (minEmployees > maxEmployees) {
+      throw new BadRequestError(`minEmployees must be less than maxEmployees`);
+    }
+
     let baseQuery = 
     `SELECT handle, 
             name, 
@@ -61,8 +65,6 @@ class Company {
 
     let queryArr = [];
     let queryBuilder = [];
-
-    console.log(minEmployees, maxEmployees, nameLike);
 
     if (minEmployees !== undefined) {
       queryArr.push(minEmployees)
@@ -89,7 +91,6 @@ class Company {
     
     queryBuilder.push(` ORDER BY name`);
     baseQuery += queryBuilder.join("");
-    console.log(baseQuery);
 
     const companiesRes = await db.query(baseQuery);
     return companiesRes.rows;
