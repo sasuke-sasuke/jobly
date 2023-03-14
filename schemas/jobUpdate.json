@@ -4,11 +4,6 @@
     "type": "object",
     "default": {},
     "title": "Root Schema",
-    "required": [
-        "title",
-        "salary",
-        "equity"
-    ],
     "properties": {
         "title": {
             "type": "string",

@@ -1,6 +1,7 @@
 'use strict';
 const db = require('../db');
 const {BadRequestError, NotFoundError} = require('../expressError');
+const {sqlForPartialUpdate} = require('../helpers/sql');
 
 // Related functions for jobs
 
@@ -82,19 +83,17 @@ class Job {
         const keys = Object.keys(data);
         if (keys.length === 0) throw new BadRequestError('No data provided');
 
-        const result = await db.query(
+        const {setCols, values} = sqlForPartialUpdate(data, {});
+        const idx = "$" + (values.length + 1);
+
+        const q =
             `UPDATE jobs
-            SET title = $1, salary = $2, equity = $3
-            WHERE id = $4
+            SET ${setCols}
+            WHERE id = ${idx}
             RETURNING id, title, salary, equity, company_handle AS "companyHandle"
-            `,
-            [
-                data.title,
-                data.salary,
-                data.equity,
-                id
-            ]
-        )
+            `
+
+        const result = await db.query(q, [...values, id]);
         const job = result.rows[0];
         if (!job) throw new NotFoundError('Job not found');
         return job;

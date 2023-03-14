@@ -8,7 +8,7 @@
         "title",
         "salary",
         "equity",
-        "company-handle"
+        "company_handle"
     ],
     "properties": {
         "title": {
@@ -35,10 +35,10 @@
                 0.7
             ]
         },
-        "company-handle": {
+        "company_handle": {
             "type": "string",
             "default": "",
-            "title": "The company-handle Schema",
+            "title": "The company_handle Schema",
             "examples": [
                 "martinez-daniels"
             ]
@@ -48,6 +48,6 @@
         "title": "Software Developer",
         "salary": 120000,
         "equity": 0.7,
-        "company-handle": "martinez-daniels"
+        "company_handle": "martinez-daniels"
     }]
 }
