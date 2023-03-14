@@ -1,55 +1,43 @@
 {
     "$schema": "https://json-schema.org/draft/2019-09/schema",
     "$id": "http://example.com/example.json",
-    "title": "Root Schema",
     "type": "object",
     "default": {},
+    "title": "Root Schema",
     "required": [
-        "job"
+        "title",
+        "salary",
+        "equity"
     ],
     "properties": {
-        "job": {
-            "title": "The job Schema",
-            "type": "object",
-            "default": {},
-            "properties": {
-                "title": {
-                    "title": "The title Schema",
-                    "type": "string",
-                    "default": "",
-                    "examples": [
-                        "Software Developer"
-                    ]
-                },
-                "salary": {
-                    "title": "The salary Schema",
-                    "type": "integer",
-                    "default": 0,
-                    "examples": [
-                        120000
-                    ]
-                },
-                "equity": {
-                    "title": "The equity Schema",
-                    "type": "number",
-                    "default": 0.0,
-                    "examples": [
-                        0.7
-                    ]
-                }
-            },
-            "examples": [{
-                "title": "Software Developer",
-                "salary": 120000,
-                "equity": 0.7
-            }]
+        "title": {
+            "type": "string",
+            "default": "",
+            "title": "The title Schema",
+            "examples": [
+                "Software Developer"
+            ]
+        },
+        "salary": {
+            "type": "integer",
+            "default": 0,
+            "title": "The salary Schema",
+            "examples": [
+                120000
+            ]
+        },
+        "equity": {
+            "type": "number",
+            "default": 0.0,
+            "title": "The equity Schema",
+            "examples": [
+                0.7
+            ]
         }
     },
     "examples": [{
-        "job": {
-            "title": "Software Developer",
-            "salary": 120000,
-            "equity": 0.7
-        }
+        "title": "Software Developer",
+        "salary": 120000,
+        "equity": 0.7
     }]
 }
