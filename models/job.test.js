@@ -29,6 +29,114 @@ describe("create", () => {
     })
 })
 
+// find all jobs
+describe("findAll", () => {
+    let testTitle = 'ob'
+
+    test('find all jobs no filters', async () => {
+        let jobs = await Job.findAll();
+        expect(jobs.length).toBe(testJobIds.length);
+    })
+
+    test('find all jobs with filter = title', async () => {
+        let jobs = await Job.findAll(testTitle);
+        expect(jobs).toEqual([
+            {
+                id: testJobIds[2],
+                title: "Job3",
+                salary: 300,
+                equity: '0',
+                companyHandle: "c2"
+            },
+            {
+                id: testJobIds[1],
+                title: "Job2",
+                salary: 200,
+                equity: '0.2',
+                companyHandle: "c1"
+            },
+            {
+                id: testJobIds[0],
+                title: "Job1",
+                salary: 100,
+                equity: '0.1',
+                companyHandle: "c1"
+            }
+        ])
+    })
+
+    test('find all jobs with filter = minSalary', async () => {
+        let jobs = await Job.findAll({minSalary: 201});
+        expect(jobs).toEqual([
+            {
+                id: testJobIds[2],
+                title: "Job3",
+                salary: 300,
+                equity: '0',
+                companyHandle: "c2"
+            }
+        ])
+    })
+
+    test('find all jobs with filter hasEquity = false', async () => {
+        let jobs = await Job.findAll({hasEquity: false});
+        expect(jobs).toEqual([
+            {
+                id: testJobIds[2],
+                title: "Job3",
+                salary: 300,
+                equity: '0',
+                companyHandle: "c2"
+            },
+            {
+                id: testJobIds[1],
+                title: "Job2",
+                salary: 200,
+                equity: '0.2',
+                companyHandle: "c1"
+            },
+            {
+                id: testJobIds[0],
+                title: "Job1",
+                salary: 100,
+                equity: '0.1',
+                companyHandle: "c1"
+            }
+        ])
+    })
+
+    test('find all jobs with filter hasEquity = true', async () => {
+        let jobs = await Job.findAll({hasEquity: true});
+        expect(jobs).toEqual([
+            {
+                id: testJobIds[1],
+                title: "Job2",
+                salary: 200,
+                equity: '0.2',
+                companyHandle: "c1"
+            },
+            {
+                id: testJobIds[0],
+                title: "Job1",
+                salary: 100,
+                equity: '0.1',
+                companyHandle: "c1"
+            }
+        ])
+    })
+
+    test('find all with filter = minSalary and hasEquity = false', async () => {
+        let jobs = await Job.findAll({ minSalary: 201, hasEquity: false});
+        expect(jobs).toEqual([{
+            id: testJobIds[2],
+            title: "Job3",
+            salary: 300,
+            equity: '0',
+            companyHandle: "c2"
+        }])
+    })
+})
+
 
 // get
 describe("get", () => {
@@ -68,7 +176,6 @@ describe("update", () => {
     test('bad request', async () => {
         try {
             let job = await Job.update(testJobIds[0], {});
-            console.log(job);
         } catch (err) {
             expect(err instanceof BadRequestError).toBeTruthy();
         }
