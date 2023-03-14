@@ -1,6 +1,6 @@
 'use strict';
 const db = require('../db');
-const {BadRequestError, NotFoundError} = require('../expressErrors');
+const {BadRequestError, NotFoundError} = require('../expressError');
 
 // Related functions for jobs
 
@@ -13,13 +13,13 @@ class Job {
             `INSERT INTO jobs 
             (title, salary, equity, company_handle)
             VALUES ($1, $2, $3, $4)
-            RETURNING id, title, salary, equity, company_handle AS 'companyHandle'
+            RETURNING id, title, salary, equity, company_handle AS "companyHandle"
             `,
             [
-                title,
-                salary,
-                equity,
-                companyHandle
+                data.title,
+                data.salary,
+                data.equity,
+                data.companyHandle
             ]
         )
         const job = result.rows[0];
@@ -29,7 +29,7 @@ class Job {
     // find a job by id
     static async get(id) {
         const result = await db.query(
-            `SELECT title, salary, equity, company_handle AS 'companyHandle'
+            `SELECT title, salary, equity, company_handle AS "companyHandle"
             FROM jobs
             WHERE id = $1`,
             [id]
@@ -40,18 +40,21 @@ class Job {
         return job;
     }
 
-    // update a job by id
+    // update a job by id provided data { title, salary, equity }
     static async update(id, data) {
+        const keys = Object.keys(data);
+        if (keys.length === 0) throw new BadRequestError('No data provided');
+
         const result = await db.query(
             `UPDATE jobs
             SET title = $1, salary = $2, equity = $3
             WHERE id = $4
-            RETURNING id, title, salary, equity, company_handle AS 'companyHandle'
+            RETURNING id, title, salary, equity, company_handle AS "companyHandle"
             `,
             [
-                title,
-                salary,
-                equity,
+                data.title,
+                data.salary,
+                data.equity,
                 id
             ]
         )
@@ -65,13 +68,13 @@ class Job {
         const result = await db.query(
             `DELETE FROM jobs
             WHERE id = $1
-            RETURNING id, title
+            RETURNING id
             `,
             [id]
         )
         const job = result.rows[0];
         if (!job) throw new NotFoundError('Job not found');
-        return {message: `${job.title} deleted`};
+        return {message: `deleted`};
 
     }
 
