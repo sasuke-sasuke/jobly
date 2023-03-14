@@ -36,9 +36,7 @@ class Job {
         )
         const job = result.rows[0];
 
-        if (!job) {
-            throw new NotFoundError('Job not found');
-        }
+        if (!job) throw new NotFoundError('Job not found');
         return job;
     }
 
@@ -46,19 +44,19 @@ class Job {
     static async update(id, data) {
         const result = await db.query(
             `UPDATE jobs
-            SET title = $1, salary = $2, equity = $3, company_handle = $4
-            WHERE id = $5
+            SET title = $1, salary = $2, equity = $3
+            WHERE id = $4
             RETURNING id, title, salary, equity, company_handle AS 'companyHandle'
             `,
             [
                 title,
                 salary,
                 equity,
-                companyHandle,
                 id
             ]
         )
         const job = result.rows[0];
+        if (!job) throw new NotFoundError('Job not found');
         return job;
     }
 

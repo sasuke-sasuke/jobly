@@ -1,0 +1,71 @@
+{
+    "$schema": "https://json-schema.org/draft/2019-09/schema",
+    "$id": "http://example.com/example.json",
+    "title": "Root Schema",
+    "type": "object",
+    "default": {},
+    "required": [
+        "job"
+    ],
+    "properties": {
+        "job": {
+            "title": "The job Schema",
+            "type": "object",
+            "default": {},
+            "required": [
+                "title",
+                "salary",
+                "equity",
+                "company-handle"
+            ],
+            "properties": {
+                "title": {
+                    "title": "The title Schema",
+                    "type": "string",
+                    "default": "",
+                    "examples": [
+                        "Software Developer"
+                    ]
+                },
+                "salary": {
+                    "title": "The salary Schema",
+                    "type": "integer",
+                    "default": 0,
+                    "examples": [
+                        120000
+                    ]
+                },
+                "equity": {
+                    "title": "The equity Schema",
+                    "type": "number",
+                    "default": 0.0,
+                    "examples": [
+                        0.7
+                    ]
+                },
+                "company-handle": {
+                    "title": "The company-handle Schema",
+                    "type": "string",
+                    "default": "",
+                    "examples": [
+                        "martinez-daniels"
+                    ]
+                }
+            },
+            "examples": [{
+                "title": "Software Developer",
+                "salary": 120000,
+                "equity": 0.7,
+                "company-handle": "martinez-daniels"
+            }]
+        }
+    },
+    "examples": [{
+        "job": {
+            "title": "Software Developer",
+            "salary": 120000,
+            "equity": 0.7,
+            "company-handle": "martinez-daniels"
+        }
+    }]
+}
