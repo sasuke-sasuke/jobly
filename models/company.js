@@ -68,6 +68,7 @@ class Company {
     let queryArr = [];
     let queryBuilder = [];
 
+    // builds query based of values
     if (minEmployees !== undefined) {
       queryArr.push(minEmployees)
       queryBuilder.push(` WHERE num_employees >= ${minEmployees}`);
