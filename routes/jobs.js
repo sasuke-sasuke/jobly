@@ -21,11 +21,11 @@ router.post('/', admin, async (req, res, next) => {
     try {
         const validator = jsonschema.validate(req.body, jobNewSchema);
         if(!validator.valid) {
-            const errors = validator.errors.map(e => e.message);
-            throw new BadRequestError(errors);
+            const errs = validator.errors.map(e => e.message);
+            throw new BadRequestError(errs);
         }
         const newJob = await Job.create(req.body);
-    return res.status(201).json({ newJob });
+        return res.status(201).json({ newJob });
     } catch (err) {
         return next(err);
     }
